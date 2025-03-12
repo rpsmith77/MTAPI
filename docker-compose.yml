@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  mtapi:
+    build:
+      context: .
+      dockerfile: mtapi.Dockerfile  # Use the Dockerfile we'll create below
+    ports:
+      - "5000:5000"  # Map host port 5000 to container port 5000
+    volumes:
+      - mtapi_data:/app/.venv  # Persist the virtual environment
+      - ./settings.cfg:/app/settings.cfg:ro # Mount settings.cfg as read-only
+      - ./models:/app/models:ro # Mount the models directory, also read-only.
+    environment:
+      MTAPI_SETTINGS: /app/settings.cfg
+    restart: always
+
+volumes:
+  mtapi_data:
